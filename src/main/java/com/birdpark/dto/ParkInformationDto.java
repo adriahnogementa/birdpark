@@ -10,4 +10,5 @@ public class ParkInformationDto{
     private String parkName;
     private String parkLocation;
     private String parkDescription;
+    private byte[] parkLogo;
 }

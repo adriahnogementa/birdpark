@@ -1,5 +1,7 @@
 package com.birdpark.queries;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,14 +20,14 @@ ParkinformationRepository repository;
     @Override
     public ParkInformationDto handle(ParkInformationQuery command) {
         
-        ParkInformation parkInformation = repository.findById(1L).get();
+        List <ParkInformation> parkInformationList = repository.findAll();
     
-        if (parkInformation != null) {
-            return new ParkInformationDto();
-            //TODO: Search for the park information and return it
+
+        if (!parkInformationList.isEmpty()) {
+            ParkInformation parkInformation = parkInformationList.get(0);
+            return new ParkInformationDto(parkInformation.getParkName(), parkInformation.getParkLocation(), parkInformation.getParkDescription(), parkInformation.getParkLogo());
         } else {
-            return null;
-            
+            throw new RuntimeException("Park Information not found");            
         }
     
     }

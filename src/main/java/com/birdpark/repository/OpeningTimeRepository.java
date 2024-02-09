@@ -1,10 +1,11 @@
 package com.birdpark.repository;
 
 import org.springframework.stereotype.Repository;
-import com.birdpark.entity.ParkInformation;
+
+import com.birdpark.entity.OpeningTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
 @Repository
-public interface ParkinformationRepository extends JpaRepository<ParkInformation, Integer>{
+public interface OpeningTimeRepository extends JpaRepository<OpeningTime, Integer>{
 }

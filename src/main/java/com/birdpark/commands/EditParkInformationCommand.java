@@ -11,5 +11,5 @@ public class EditParkInformationCommand implements Command<Boolean>{
     private String parkName;
     private String parkLocation;
     private String parkDescription;
-    
+    private byte[] parkLogo;
 }
