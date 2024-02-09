@@ -17,8 +17,10 @@ This project involves the development of a web application to support the establ
 1. Clone the repository to your local machine.
 2. Navigate to the root directory of the project.
 3. Ensure you have Docker installed on your machine.
-4. Run `docker-compose up` to start the application.
-5. Access the application at `http://localhost:8080`.
+4. Run `docker build -t birdpark-db .` to build the container.
+5. Run `docker run -d --name my-birdpark-db -p 5432:5432 birdpark-db ` to start the DB container.
+6. Start the Application `BirdparkApplication.java`.
+7. You can test with `http://localhost:8080/openingtime/get`.
 
 #### Usage only with Frontend (https://github.com/Louiz7007/Vogelpark_Frontend)
 - Visit the homepage to view basic information about the bird park.
