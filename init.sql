@@ -31,7 +31,7 @@ CREATE TABLE ticketPrice (
 CREATE TABLE attractions (
   attraction_id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
-  logo VARCHAR(255),
+  logo BYTEA,
   description TEXT,
   tags VARCHAR(255),
   tours VARCHAR(255)
@@ -59,11 +59,19 @@ CREATE TABLE attractionTags (
 );
 
 
-\set image_data `cat '/docker-path-to-logo/park_logo.jpg' | xxd -p | tr -d '\n'`
+\set park_logo `cat '/docker-path-to-logo/park_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set flugshow_logo `cat '/docker-path-to-logo/flug_show_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set pinguin_gehege_logo `cat '/docker-path-to-logo/pinguin_gehege_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set tropenhaus_logo `cat '/docker-path-to-logo/tropenhaus_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set vogelvoliere_logo `cat '/docker-path-to-logo/vogelvoliere_logo.jpg' | xxd -p | tr -d '\n'`
 
 
 INSERT INTO parkInformation (parkname, parklocation, parkdescription, parklogo)
-VALUES ('Vogelpark Hannover', 'Arpker Str. 21, 30519 Hannover', 'Willkommen im Vogelpark Hannover! Unser Park bietet eine Vielzahl von Vogelarten aus der ganzen Welt. Sogar Emus!', decode(:'image_data', 'hex'));
+VALUES ('Vogelpark Hannover', 'Arpker Str. 21, 30519 Hannover', 'Willkommen im Vogelpark Hannover! Unser Park bietet eine Vielzahl von Vogelarten aus der ganzen Welt. Sogar Emus!', decode(:'park_logo', 'hex'));
 
 
 INSERT INTO openingTime (bird_park_id, day_of_week, opening_time, closing_time)
@@ -84,10 +92,10 @@ VALUES (1, 'Erwachsener', 15.00),
 
 INSERT INTO attractions (attraction_id, name, logo, description, tags, tours)
 VALUES
-  (1, 'Vogelvoliere', 'vogelvoliere_logo.jpg', 'Eine große Voliere, in der verschiedene Vogelarten leben.', 'Vögel, Voliere, Tropisch', 'Vogeltour'),
-  (2, 'Flugshow', 'flugshow_logo.jpg', 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.', 'Vögel, Show, Flug', 'Vogeltour, Showtour'),
-  (3, 'Pinguin-Gehege', 'pinguin_gehege_logo.jpg', 'Ein Gehege, in dem Pinguine leben und schwimmen.', 'Pinguine, Gehege, Wasser', 'Vogeltour'),
-  (4, 'Tropenhaus', 'tropenhaus_logo.jpg', 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 'Vögel, Tropisch, Tiere, Pflanzen', 'Tropentour, Vogeltour');
+  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.', 'Vögel, Voliere, Tropisch', 'Vogeltour'),
+  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.', 'Vögel, Show, Flug', 'Vogeltour, Showtour'),
+  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.', 'Pinguine, Gehege, Wasser', 'Vogeltour'),
+  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 'Vögel, Tropisch, Tiere, Pflanzen', 'Tropentour, Vogeltour');
 
 
 INSERT INTO tours (tour_id, name)
