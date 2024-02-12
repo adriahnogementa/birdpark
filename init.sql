@@ -110,15 +110,12 @@ VALUES
   (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.', 1),
   (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.', 2),
   (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.', 1),
-  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 3);
-
-INSERT INTO attractions (attraction_id, name, logo, description, tour_id)
-VALUES
-  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'A winding trail through a lush jungle filled with colorful toucans and other tropical birds.', 3),
-  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'An expansive canyon home to majestic eagles soaring high above.', 2),
-  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'A vibrant paradise where playful parrots entertain visitors with their antics.', 1),
-  (8, 'Penguin Cove', decode(:'penguin_cove_logo', 'hex'), 'A chilly cove where adorable penguins waddle and swim in icy waters.', 2),
-  (9, 'Aviary Adventure', decode(:'aviary_adventure_logo', 'hex'), 'An immersive aviary experience where visitors can walk among free-flying birds from around the world.', 1);
+  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 3),
+  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 3),
+  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 2),
+  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 1),
+  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 2),
+  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 1);
 
 
 
@@ -137,13 +134,13 @@ VALUES
   (10, 'Pflanzen'),
   (11, 'Jungle'),
   (12, 'Toucans'),
-  (13, 'Eagles'),
-  (14, 'Scenic Views'),
-  (15, 'Parrots'),
-  (16, 'Interactive'),
-  (17, 'Adorable'),
-  (18, 'Icy Waters'),
-  (19, 'Free-flying');
+  (13, 'Adler'),
+  (14, 'Panoramablick'),
+  (15, 'Papageien'),
+  (16, 'Interaktiv'),
+  (17, 'Niedlich'),
+  (18, 'Eisiges Wasser'),
+  (19, 'Freifliegend');
 
 
 

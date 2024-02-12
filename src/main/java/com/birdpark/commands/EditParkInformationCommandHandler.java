@@ -9,25 +9,23 @@ import com.birdpark.repository.ParkinformationRepository;
 import an.awesome.pipelinr.Command;
 
 @Component
-public class EditParkInformationCommandHandler implements Command.Handler<EditParkInformationCommand, Boolean>{
+public class EditParkInformationCommandHandler implements Command.Handler<EditParkInformationCommand, Boolean> {
 
-@Autowired
-ParkinformationRepository parkinformationRepository;
+    @Autowired
+    ParkinformationRepository parkinformationRepository;
 
     @Override
     public Boolean handle(EditParkInformationCommand command) {
-      
-        var newEntity = new ParkInformation(1,command.getParkName(), command.getParkLocation(),command.getParkDescription(), command.getParkLogo());
+
+        var newEntity = new ParkInformation(1, command.getParkName(), command.getParkLocation(),
+                command.getParkDescription(), command.getParkLogo());
 
         var result = parkinformationRepository.save(newEntity);
 
         if (result != null) {
             return true;
-        } else {
-            return false;
-            
         }
-    }
-    
+        return false;
 
+    }
 }
