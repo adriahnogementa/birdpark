@@ -8,13 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.birdpark.commands.EditOpeningTimeCommand;
 import com.birdpark.commands.EditTicketPriceCommand;
-import com.birdpark.dto.OpeningTimeDto;
 import com.birdpark.dto.TicketPriceDto;
-import com.birdpark.entity.OpeningTime;
 import com.birdpark.entity.TicketPrice;
-import com.birdpark.queries.OpeningTimeQuery;
 import com.birdpark.queries.TicketPriceQuery;
 
 import an.awesome.pipelinr.Pipeline;
