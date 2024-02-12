@@ -28,7 +28,8 @@ CREATE TABLE ticketPrice (
     FOREIGN KEY (bird_park_id) REFERENCES parkInformation(id)
 );
 
-\set image_data `cat 'src\main\resources\park_logo.jpg' | xxd -p | tr -d '\n'`
+\set image_data `cat '/docker-path-to-logo/park_logo.jpg' | xxd -p | tr -d '\n'`
+
 
 INSERT INTO parkInformation (parkname, parklocation, parkdescription, parklogo)
 VALUES ('Vogelpark Hannover', 'Arpker Str. 21, 30519 Hannover', 'Willkommen im Vogelpark Hannover! Unser Park bietet eine Vielzahl von Vogelarten aus der ganzen Welt. Sogar Emus!', decode(:'image_data', 'hex'));
