@@ -3,24 +3,20 @@ package com.birdpark.commands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.birdpark.repository.OpeningTimeRepository;
+import com.birdpark.repository.TicketPriceRepository;
 
 import an.awesome.pipelinr.Command;
 
 @Component
-public class EditOpeningTimeCommandHandler implements Command.Handler<EditOpeningTimeCommand, Boolean>{
+public class EditTicketPriceCommandHandler implements Command.Handler<EditTicketPriceCommand,Boolean>{
 
-@Autowired
-OpeningTimeRepository openingTimeRepository;
-
+    @Autowired
+    TicketPriceRepository ticketPriceRepository;
 
     @Override
-    public Boolean handle(EditOpeningTimeCommand commands) {
-    
-
-
+    public Boolean handle(EditTicketPriceCommand commands) {
         boolean allSaved = commands.stream()
-        .map(openingTimeRepository::save)
+        .map(ticketPriceRepository::save)
         .noneMatch(saved -> false);
 
         if (allSaved) {

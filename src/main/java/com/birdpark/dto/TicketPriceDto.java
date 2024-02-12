@@ -1,17 +1,17 @@
 package com.birdpark.dto;
 
-import java.time.LocalTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import java.math.BigDecimal;
+
 
 @Getter
 @AllArgsConstructor
-public class OpeningTimeDto{
+public class TicketPriceDto {
     
     private Integer id;
     private Integer birdParkId;
-    private String dayOfWeek;
-    private LocalTime openingTime;
-    private LocalTime closingTime;
+    private String ticketType;
+    private BigDecimal price;
+
 }

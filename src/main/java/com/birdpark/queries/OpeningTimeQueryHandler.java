@@ -20,7 +20,7 @@ OpeningTimeRepository repository;
     @Override
     public List<OpeningTimeDto> handle(OpeningTimeQuery command) {
        
-        List<OpeningTime> openingTimeList = repository.findAll();
+        List<OpeningTime> openingTimeList = repository.findByBirdId(command.getBird_park_id());
 
         if (!openingTimeList.isEmpty()) {
             return openingTimeList.stream().map(openingTime -> mapToDto(openingTime)).toList();

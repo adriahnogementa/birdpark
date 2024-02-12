@@ -1,18 +1,18 @@
 package com.birdpark.commands;
 
-import java.time.LocalTime;
 
 import an.awesome.pipelinr.Command;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+
+import com.birdpark.entity.OpeningTime;
+
 
 @Getter
-@AllArgsConstructor
-public class EditOpeningTimeCommand implements Command<Boolean>{
+@NoArgsConstructor
+public class EditOpeningTimeCommand extends ArrayList<OpeningTime> implements Command<Boolean> {
     
-    private Integer id;
-    private Integer birdParkId;
-    private String dayOfWeek;
-    private LocalTime openingTime;
-    private LocalTime closingTime;
+
 }

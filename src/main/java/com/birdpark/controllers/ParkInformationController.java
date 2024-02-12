@@ -31,7 +31,7 @@ public class ParkInformationController extends BaseController {
 
     @GetMapping("/get")
     public ParkInformationDto getParkInformation() {
-        ParkInformationQuery query = new ParkInformationQuery();
+        ParkInformationQuery query = new ParkInformationQuery(1);
         return query.execute(pipeline);
     }
 
