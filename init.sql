@@ -28,19 +28,18 @@ CREATE TABLE ticketPrice (
     FOREIGN KEY (bird_park_id) REFERENCES parkInformation(id)
 );
 
+CREATE TABLE tour (
+  tour_id INT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE attractions (
   attraction_id INT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   logo BYTEA,
   description TEXT,
-  tags VARCHAR(255),
-  tours VARCHAR(255)
-);
-
-
-CREATE TABLE tours (
-  tour_id INT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL
+  tour_id INT,
+  FOREIGN KEY (tour_id) REFERENCES tour(tour_id)
 );
 
 
@@ -67,8 +66,17 @@ CREATE TABLE attractionTags (
 
 \set tropenhaus_logo `cat '/docker-path-to-logo/tropenhaus_logo.jpg' | xxd -p | tr -d '\n'`
 
+\set toucan_trail_logo `cat '/docker-path-to-logo/toucan_trail_logo.jpg' | xxd -p | tr -d '\n'`
+
 \set vogelvoliere_logo `cat '/docker-path-to-logo/vogelvoliere_logo.jpg' | xxd -p | tr -d '\n'`
 
+\set eagle_canyon_logo `cat '/docker-path-to-logo/eagle_canyon_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set parrot_paradise_logo `cat '/docker-path-to-logo/parrot_paradise_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set penguin_cove_logo `cat '/docker-path-to-logo/penguin_cove_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set aviary_adventure_logo `cat '/docker-path-to-logo/aviary_adventure_logo.jpg' | xxd -p | tr -d '\n'`
 
 INSERT INTO parkInformation (parkname, parklocation, parkdescription, parklogo)
 VALUES ('Vogelpark Hannover', 'Arpker Str. 21, 30519 Hannover', 'Willkommen im Vogelpark Hannover! Unser Park bietet eine Vielzahl von Vogelarten aus der ganzen Welt. Sogar Emus!', decode(:'park_logo', 'hex'));
@@ -89,20 +97,30 @@ VALUES (1, 'Erwachsener', 15.00),
        (1, 'Kind', 8.00),
        (1, 'Senioren', 12.00);
 
-
-INSERT INTO attractions (attraction_id, name, logo, description, tags, tours)
-VALUES
-  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.', 'Vögel, Voliere, Tropisch', 'Vogeltour'),
-  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.', 'Vögel, Show, Flug', 'Vogeltour, Showtour'),
-  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.', 'Pinguine, Gehege, Wasser', 'Vogeltour'),
-  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 'Vögel, Tropisch, Tiere, Pflanzen', 'Tropentour, Vogeltour');
-
-
-INSERT INTO tours (tour_id, name)
+INSERT INTO tour (tour_id, name)
 VALUES
   (1, 'Vogeltour'),
   (2, 'Showtour'),
   (3, 'Tropentour');
+
+-- TODO: Translate German Stuff
+
+INSERT INTO attractions (attraction_id, name, logo, description, tour_id)
+VALUES
+  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.', 1),
+  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.', 2),
+  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.', 1),
+  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 3);
+
+INSERT INTO attractions (attraction_id, name, logo, description, tour_id)
+VALUES
+  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'A winding trail through a lush jungle filled with colorful toucans and other tropical birds.', 3),
+  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'An expansive canyon home to majestic eagles soaring high above.', 2),
+  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'A vibrant paradise where playful parrots entertain visitors with their antics.', 1),
+  (8, 'Penguin Cove', decode(:'penguin_cove_logo', 'hex'), 'A chilly cove where adorable penguins waddle and swim in icy waters.', 2),
+  (9, 'Aviary Adventure', decode(:'aviary_adventure_logo', 'hex'), 'An immersive aviary experience where visitors can walk among free-flying birds from around the world.', 1);
+
+
 
 
 INSERT INTO tags (tag_id, name)
@@ -116,7 +134,17 @@ VALUES
   (7, 'Gehege'),
   (8, 'Wasser'),
   (9, 'Tiere'),
-  (10, 'Pflanzen');
+  (10, 'Pflanzen'),
+  (11, 'Jungle'),
+  (12, 'Toucans'),
+  (13, 'Eagles'),
+  (14, 'Scenic Views'),
+  (15, 'Parrots'),
+  (16, 'Interactive'),
+  (17, 'Adorable'),
+  (18, 'Icy Waters'),
+  (19, 'Free-flying');
+
 
 
 INSERT INTO attractionTags (attraction_id, tag_id)
@@ -134,5 +162,21 @@ VALUES
   (4, 1), -- Vögel
   (4, 3), -- Tropisch
   (4, 9), -- Tiere
-  (4, 10); -- Pflanzen
+  (4, 10),  --  Pflanzen
+  (5, 11), -- Jungle
+  (5, 12), -- Toucans
+  (5, 3),  -- Tropical
+  (5, 1),  -- Birds
+  (6, 13), -- Eagles
+  (6, 14), -- Scenic Views
+  (6, 1),  -- Birds
+  (7, 15), -- Parrots
+  (7, 17), -- Adorable
+  (7, 16), -- Interactive
+  (8, 6),  -- Penguins
+  (8, 8),  -- Icy Waters
+  (8, 1),  -- Birds
+  (9, 1),  -- Birds
+  (9, 16), -- Interactive
+  (9, 19); -- Free-flying
 
