@@ -33,16 +33,12 @@ public class ParkInformation{
     public ParkInformation() {
     }
 
-    public ParkInformation(String parkName, String parkLocation, String parkDescription, byte[] parkLogo) {
+    public ParkInformation(Integer id,String parkName, String parkLocation, String parkDescription, byte[] parkLogo) {
+        this.id =id;
         this.parkName = parkName;
         this.parkLocation = parkLocation;
         this.parkDescription = parkDescription;
         this.parkLogo = parkLogo;
     }
 
-    public ParkInformation(String parkName, String parkLocation, String parkDescription) {
-        this.parkName = parkName;
-        this.parkLocation = parkLocation;
-        this.parkDescription = parkDescription;
-    }
 }

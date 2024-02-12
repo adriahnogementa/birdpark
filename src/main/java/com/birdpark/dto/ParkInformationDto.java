@@ -1,5 +1,6 @@
 package com.birdpark.dto;
 
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

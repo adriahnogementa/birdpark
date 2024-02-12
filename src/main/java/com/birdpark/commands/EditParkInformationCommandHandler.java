@@ -17,7 +17,7 @@ ParkinformationRepository parkinformationRepository;
     @Override
     public Boolean handle(EditParkInformationCommand command) {
       
-        var newEntity = new ParkInformation(command.getParkName(), command.getParkLocation(),command.getParkDescription(), command.getParkLogo());
+        var newEntity = new ParkInformation(1,command.getParkName(), command.getParkLocation(),command.getParkDescription(), command.getParkLogo());
 
         var result = parkinformationRepository.save(newEntity);
 
