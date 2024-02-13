@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ParkInformationDto{
+public class ParkInformationDto {
 
     private String parkName;
     private String parkLocation;

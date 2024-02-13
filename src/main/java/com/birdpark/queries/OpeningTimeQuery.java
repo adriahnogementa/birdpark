@@ -11,7 +11,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class OpeningTimeQuery implements Command<List<OpeningTimeDto>> {
 
-
     private Integer bird_park_id;
-    
+
 }

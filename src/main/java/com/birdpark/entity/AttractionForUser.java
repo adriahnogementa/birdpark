@@ -3,24 +3,19 @@ package com.birdpark.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
+@AllArgsConstructor
 
 @Entity
 @Table(name = "attractions")
 public class AttractionForUser {
 
-   
     @Id
     @Column(name = "attraction_id")
     private Integer id;
@@ -40,8 +35,7 @@ public class AttractionForUser {
     @Column(name = "tour")
     private String tour;
 
-
     public AttractionForUser() {
     }
-    
+
 }

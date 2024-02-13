@@ -7,8 +7,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class OpeningTimeDto{
-    
+public class OpeningTimeDto {
+
     private Integer id;
     private Integer birdParkId;
     private String dayOfWeek;

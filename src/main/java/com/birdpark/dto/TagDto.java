@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class TagDto {
-    
+
     private Integer tagId;
     private String tagName;
-    
+
 }

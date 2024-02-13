@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.birdpark.exception.CommandValidationException;
 import com.birdpark.utilities.StackTraceUtilities;
-
 import an.awesome.pipelinr.Command;
 import an.awesome.pipelinr.Pipeline;
 
@@ -43,5 +42,4 @@ public abstract class BaseController {
           HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
 }
