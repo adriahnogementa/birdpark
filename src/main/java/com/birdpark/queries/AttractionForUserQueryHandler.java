@@ -33,7 +33,7 @@ public class AttractionForUserQueryHandler implements Command.Handler<Attraction
     }
 
     private AttractionForUserDto mapToDto(AttractionForUser attractionForUser) {
-        return new AttractionForUserDto(attractionForUser.getAttractionName(), attractionForUser.getAttractionDescription(), attractionForUser.getAttractionLogo(), generateListOfTags(attractionForUser), attractionForUser.getTour());
+        return new AttractionForUserDto(attractionForUser.getId(),attractionForUser.getAttractionName(), attractionForUser.getAttractionDescription(), attractionForUser.getAttractionLogo(), generateListOfTags(attractionForUser), attractionForUser.getTour());
     }
 
     private List<String> generateListOfTags(AttractionForUser attractionForUser) {

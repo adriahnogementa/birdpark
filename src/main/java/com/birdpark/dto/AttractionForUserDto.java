@@ -12,6 +12,7 @@ import lombok.Setter;
 public class AttractionForUserDto {
 
 
+    private Integer id;
     private String attractionName;
     private String description;
     private byte[] logo;
