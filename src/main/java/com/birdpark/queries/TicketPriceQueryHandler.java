@@ -9,6 +9,8 @@ import com.birdpark.repository.TicketPriceRepository;
 
 import an.awesome.pipelinr.Command;
 import java.util.List;
+
+
 @Component
 public class TicketPriceQueryHandler implements Command.Handler<TicketPriceQuery, List<TicketPriceDto>> {
 
