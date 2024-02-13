@@ -30,6 +30,9 @@ CREATE TABLE ticketPrice (
 
 CREATE TABLE tour (
   tour_id INT PRIMARY KEY,
+  logo BYTEA,
+  price DECIMAL(10, 2),
+  duration_in_minutes INT,
   name VARCHAR(255) NOT NULL
 );
 
@@ -38,6 +41,7 @@ CREATE TABLE attractions (
   name VARCHAR(255) NOT NULL,
   logo BYTEA,
   description TEXT,
+  duration_in_minutes INT,
   tour_id INT,
   FOREIGN KEY (tour_id) REFERENCES tour(tour_id)
 );
@@ -105,17 +109,17 @@ VALUES
 
 -- TODO: Translate German Stuff
 
-INSERT INTO attractions (attraction_id, name, logo, description, tour_id)
+INSERT INTO attractions (attraction_id, name, logo, description, duration_in_minutes, tour_id)
 VALUES
-  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.', 1),
-  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.', 2),
-  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.', 1),
-  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 3),
-  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 3),
-  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 2),
-  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 1),
-  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 2),
-  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 1);
+  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.',45, 1),
+  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.',30, 2),
+  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.',20, 1),
+  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 60,3),
+  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 15,3),
+  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 30,2),
+  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 30,1),
+  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 40,2),
+  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 60,1);
 
 
 
@@ -176,4 +180,44 @@ VALUES
   (9, 1),  -- Birds
   (9, 16), -- Interactive
   (9, 19); -- Free-flying
+
+UPDATE tour AS t
+SET duration_in_minutes = subquery.total_duration
+FROM (
+    SELECT
+        a.tour_id,
+        SUM(a.duration_in_minutes) AS total_duration
+    FROM
+        attractions AS a
+    GROUP BY
+        a.tour_id
+) AS subquery
+WHERE
+    t.tour_id = subquery.tour_id;
+
+    CREATE OR REPLACE FUNCTION update_tour_duration()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE tour AS t
+    SET duration_in_minutes = subquery.total_duration
+    FROM (
+        SELECT
+            a.tour_id,
+            SUM(a.duration_in_minutes) AS total_duration
+        FROM
+            attractions AS a
+        GROUP BY
+            a.tour_id
+    ) AS subquery
+    WHERE
+        t.tour_id = subquery.tour_id;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_tour_duration
+AFTER INSERT OR UPDATE OR DELETE ON attractions
+FOR EACH STATEMENT
+EXECUTE FUNCTION update_tour_duration();
 
