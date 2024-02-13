@@ -1,6 +1,8 @@
 package com.birdpark.controllers;
 
 import java.util.List;
+
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.birdpark.commands.DeleteAttractionCommand;
 import com.birdpark.commands.EditAttractionCommand;
 import com.birdpark.dto.AttractionDto;
 import com.birdpark.dto.AttractionForUserDto;
@@ -31,6 +34,12 @@ public class AttractionController extends BaseController {
                 .forEach(dto -> command
                         .add(new Attraction(dto.getId(), dto.getAttractionName(), dto.getLogo(), dto.getDescription(),
                                 dto.getDurationInMinutes(), dto.getTourId())));
+        return this.execute(command);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteAttraction(@RequestBody AttractionDto dto) {
+        DeleteAttractionCommand command = new DeleteAttractionCommand(dto.getId());
         return this.execute(command);
     }
 
