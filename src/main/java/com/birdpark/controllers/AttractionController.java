@@ -15,6 +15,7 @@ import com.birdpark.commands.EditAttractionCommand;
 import com.birdpark.commands.delete.DeleteAttractionCommand;
 import com.birdpark.dto.AttractionDto;
 import com.birdpark.dto.AttractionForUserDto;
+import com.birdpark.dto.TagDto;
 import com.birdpark.entity.Attraction;
 import com.birdpark.queries.AttractionForUserQuery;
 
@@ -43,10 +44,14 @@ public class AttractionController extends BaseController {
         return this.execute(command);
     }
 
-    @GetMapping("/getUserView")
-    public List<AttractionForUserDto> getAttraction() {
+    @GetMapping("/getUserViewByTag")
+    public List<AttractionForUserDto> getAttractionByTag(@RequestBody List<TagDto> tagDto) {
         AttractionForUserQuery query = new AttractionForUserQuery();
-        return query.execute(pipeline);
+        List<AttractionForUserDto> attractionList = query.execute(pipeline);
+        return attractionList.stream()
+            .filter(attraction -> tagDto.stream().allMatch(
+                tag -> attraction.getTags().stream().anyMatch(attractionTag -> attractionTag.equals(tag.getTagName()))))
+            .toList();
     }
 
 }
