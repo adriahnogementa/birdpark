@@ -19,5 +19,8 @@ COPY src/main/resources/pinguin_gehege_logo.jpg /docker-path-to-logo/
 COPY src/main/resources/toucan_trail_logo.jpg /docker-path-to-logo/
 COPY src/main/resources/tropenhaus_logo.jpg /docker-path-to-logo/
 COPY src/main/resources/vogelvoliere_logo.jpg /docker-path-to-logo/
+COPY src/main/resources/vogeltour_logo.jpg /docker-path-to-logo/
+COPY src/main/resources/showtour_logo.jpg /docker-path-to-logo/
+COPY src/main/resources/tropentour_logo.jpg /docker-path-to-logo/
 
 COPY init.sql /docker-entrypoint-initdb.d/

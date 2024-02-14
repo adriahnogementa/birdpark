@@ -33,7 +33,9 @@ CREATE TABLE tour (
   logo BYTEA,
   price DECIMAL(10, 2),
   duration_in_minutes INT,
-  name VARCHAR(255) NOT NULL
+  name VARCHAR(255) NOT NULL,
+  begin_time TIME,
+  end_time TIME
 );
 
 CREATE TABLE attractions (
@@ -82,6 +84,13 @@ CREATE TABLE attractionTags (
 
 \set aviary_adventure_logo `cat '/docker-path-to-logo/aviary_adventure_logo.jpg' | xxd -p | tr -d '\n'`
 
+\set vogeltour_logo `cat '/docker-path-to-logo/vogeltour_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set showtour_logo `cat '/docker-path-to-logo/showtour_logo.jpg' | xxd -p | tr -d '\n'`
+
+\set tropentour_logo `cat '/docker-path-to-logo/tropentour_logo.jpg' | xxd -p | tr -d '\n'`
+
+
 INSERT INTO parkInformation (parkname, parklocation, parkdescription, parklogo)
 VALUES ('Vogelpark Hannover', 'Arpker Str. 21, 30519 Hannover', 'Willkommen im Vogelpark Hannover! Unser Park bietet eine Vielzahl von Vogelarten aus der ganzen Welt. Sogar Emus!', decode(:'park_logo', 'hex'));
 
@@ -101,13 +110,12 @@ VALUES (1, 'Erwachsener', 15.00),
        (1, 'Kind', 8.00),
        (1, 'Senioren', 12.00);
 
-INSERT INTO tour (tour_id, name)
+INSERT INTO tour (tour_id,logo, price, name, begin_time)
 VALUES
-  (1, 'Vogeltour'),
-  (2, 'Showtour'),
-  (3, 'Tropentour');
+  (1, decode(:'vogeltour_logo','hex'), 25.00 ,'Vogeltour', '10:00:00'),
+  (2, decode(:'showtour_logo','hex'), 30.00 ,'Showtour', '12:00:00'),
+  (3, decode(:'tropentour_logo','hex'), 35.00 ,'Tropentour', '14:00:00');
 
--- TODO: Translate German Stuff
 
 INSERT INTO attractions (attraction_id, name, logo, description, duration_in_minutes, tour_id)
 VALUES
@@ -145,8 +153,6 @@ VALUES
   (17, 'Niedlich'),
   (18, 'Eisiges Wasser'),
   (19, 'Freifliegend');
-
-
 
 INSERT INTO attractionTags (attraction_id, tag_id)
 VALUES
@@ -195,7 +201,14 @@ FROM (
 WHERE
     t.tour_id = subquery.tour_id;
 
-    CREATE OR REPLACE FUNCTION update_tour_duration()
+UPDATE tour AS t
+SET end_time = t.begin_time + INTERVAL '1 minute' * (
+    SELECT COALESCE(SUM(duration_in_minutes), 0)
+    FROM attractions
+    WHERE tour_id = t.tour_id
+);
+
+CREATE OR REPLACE FUNCTION update_tour_duration()
 RETURNS TRIGGER AS $$
 BEGIN
     UPDATE tour AS t
@@ -228,6 +241,28 @@ BEGIN
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_tour_end_time()
+RETURNS TRIGGER AS $$
+DECLARE
+    tour_duration INT;
+BEGIN
+    SELECT SUM(a.duration_in_minutes) INTO tour_duration
+    FROM attractions AS a
+    WHERE a.tour_id = NEW.tour_id;
+
+    UPDATE tour
+    SET end_time = tour.begin_time + INTERVAL '1 minute' * tour_duration
+    WHERE tour_id = NEW.tour_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_tour_end_time_trigger
+AFTER INSERT OR UPDATE ON attractions
+FOR EACH ROW
+EXECUTE FUNCTION update_tour_end_time();
 
 CREATE TRIGGER delete_attraction_tags_trigger
 BEFORE DELETE ON attractions
