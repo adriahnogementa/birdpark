@@ -44,14 +44,21 @@ public class AttractionController extends BaseController {
         return this.execute(command);
     }
 
+    @GetMapping("/getUserView")
+    public List<AttractionForUserDto> getAttraction() {
+        AttractionForUserQuery query = new AttractionForUserQuery();
+        return query.execute(pipeline);
+    }
+
     @GetMapping("/getUserViewByTag")
     public List<AttractionForUserDto> getAttractionByTag(@RequestBody List<TagDto> tagDto) {
         AttractionForUserQuery query = new AttractionForUserQuery();
         List<AttractionForUserDto> attractionList = query.execute(pipeline);
         return attractionList.stream()
-            .filter(attraction -> tagDto.stream().allMatch(
-                tag -> attraction.getTags().stream().anyMatch(attractionTag -> attractionTag.equals(tag.getTagName()))))
-            .toList();
+                .filter(attraction -> tagDto.stream().allMatch(
+                        tag -> attraction.getTags().stream()
+                                .anyMatch(attractionTag -> attractionTag.equals(tag.getTagName()))))
+                .toList();
     }
 
 }
