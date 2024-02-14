@@ -45,6 +45,7 @@ CREATE TABLE attractions (
   description TEXT,
   duration_in_minutes INT,
   tour_id INT,
+  tour_order INT,
   FOREIGN KEY (tour_id) REFERENCES tour(tour_id)
 );
 
@@ -117,17 +118,17 @@ VALUES
   (3, decode(:'tropentour_logo','hex'), 35.00 ,'Tropentour', '14:00:00');
 
 
-INSERT INTO attractions (attraction_id, name, logo, description, duration_in_minutes, tour_id)
+INSERT INTO attractions (attraction_id, name, logo, description, duration_in_minutes, tour_id, tour_order)
 VALUES
-  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.',45, 1),
-  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.',30, 2),
-  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.',20, 1),
-  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 60,3),
-  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 15,3),
-  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 30,2),
-  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 30,1),
-  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 40,2),
-  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 60,1);
+  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.',45, 1, 1),
+  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.',30, 2,1),
+  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.',20, 1,2),
+  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 60,3,1),
+  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 15,3,2),
+  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 30,2,2),
+  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 30,1,3),
+  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 40,2,3),
+  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 60,1,4);
 
 
 
