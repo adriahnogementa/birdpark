@@ -2,17 +2,17 @@ package com.birdpark.controllers;
 
 import java.util.List;
 
-import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.birdpark.commands.DeleteAttractionCommand;
 import com.birdpark.commands.EditAttractionCommand;
+import com.birdpark.commands.delete.DeleteAttractionCommand;
 import com.birdpark.dto.AttractionDto;
 import com.birdpark.dto.AttractionForUserDto;
 import com.birdpark.entity.Attraction;
@@ -37,7 +37,7 @@ public class AttractionController extends BaseController {
         return this.execute(command);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAttraction(@RequestBody AttractionDto dto) {
         DeleteAttractionCommand command = new DeleteAttractionCommand(dto.getId());
         return this.execute(command);

@@ -1,4 +1,4 @@
-package com.birdpark.commands;
+package com.birdpark.commands.delete;
 
 import an.awesome.pipelinr.Command;
 import lombok.AllArgsConstructor;

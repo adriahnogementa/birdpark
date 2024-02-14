@@ -221,3 +221,15 @@ AFTER INSERT OR UPDATE OR DELETE ON attractions
 FOR EACH STATEMENT
 EXECUTE FUNCTION update_tour_duration();
 
+CREATE OR REPLACE FUNCTION delete_attraction_tags()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM attractiontags WHERE attraction_id = OLD.attraction_id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_attraction_tags_trigger
+BEFORE DELETE ON attractions
+FOR EACH ROW
+EXECUTE FUNCTION delete_attraction_tags();
