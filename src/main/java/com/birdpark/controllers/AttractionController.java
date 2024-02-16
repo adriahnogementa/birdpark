@@ -4,12 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.birdpark.commands.EditAttractionCommand;
 import com.birdpark.commands.delete.DeleteAttractionCommand;
@@ -50,7 +45,8 @@ public class AttractionController extends BaseController {
         return query.execute(pipeline);
     }
 
-    @GetMapping("/getUserViewByTag")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/getUserViewByTag")
     public List<AttractionForUserDto> getAttractionByTag(@RequestBody List<TagDto> tagDto) {
         AttractionForUserQuery query = new AttractionForUserQuery();
         List<AttractionForUserDto> attractionList = query.execute(pipeline);
