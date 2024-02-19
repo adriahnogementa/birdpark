@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface OpeningTimeRepository extends JpaRepository<OpeningTime, Integer> {
 
-    List<OpeningTime> findByBirdId(Integer birdId);
+    List<OpeningTime> findByBirdParkId(Integer birdParkId);
 }

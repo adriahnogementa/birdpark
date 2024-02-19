@@ -1,4 +1,3 @@
-
 GRANT ALL PRIVILEGES ON DATABASE birdpark TO postgres;
 
 \c birdpark;
@@ -43,10 +42,7 @@ CREATE TABLE attractions (
   name VARCHAR(255) NOT NULL,
   logo BYTEA,
   description TEXT,
-  duration_in_minutes INT,
-  tour_id INT,
-  tour_order INT,
-  FOREIGN KEY (tour_id) REFERENCES tour(tour_id)
+  duration_in_minutes INT
 );
 
 
@@ -60,8 +56,17 @@ CREATE TABLE attractionTags (
   attraction_id INT,
   tag_id INT,
   PRIMARY KEY (attraction_id, tag_id),
-  FOREIGN KEY (attraction_id) REFERENCES Attractions(attraction_id),
-  FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)
+  FOREIGN KEY (attraction_id) REFERENCES Attractions(attraction_id) ON DELETE CASCADE,
+  FOREIGN KEY (tag_id) REFERENCES Tags(tag_id) ON DELETE CASCADE
+);
+
+CREATE TABLE attractionTours (
+  attraction_id INT,
+  tour_id INT,
+  tour_order INT,
+  PRIMARY KEY (attraction_id, tour_id),
+  FOREIGN KEY (attraction_id) REFERENCES Attractions(attraction_id) ON DELETE CASCADE,
+  FOREIGN KEY (tour_id) REFERENCES Tour(tour_id) ON DELETE CASCADE
 );
 
 
@@ -118,20 +123,30 @@ VALUES
   (3, decode(:'tropentour_logo','hex'), 35.00 ,'Tropentour', '14:00:00');
 
 
-INSERT INTO attractions (attraction_id, name, logo, description, duration_in_minutes, tour_id, tour_order)
+INSERT INTO attractions (attraction_id, name, logo, description, duration_in_minutes)
 VALUES
-  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.',45, 1, 1),
-  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.',30, 2,1),
-  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.',20, 1,2),
-  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 60,3,1),
-  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 15,3,2),
-  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 30,2,2),
-  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 30,1,3),
-  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 40,2,3),
-  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 60,1,4);
+  (1, 'Vogelvoliere', decode(:'vogelvoliere_logo', 'hex'), 'Eine große Voliere, in der verschiedene Vogelarten leben.',45),
+  (2, 'Flugshow', decode(:'flugshow_logo', 'hex'), 'Eine spektakuläre Flugshow mit verschiedenen Vogelarten.',30),
+  (3, 'Pinguin-Gehege', decode(:'pinguin_gehege_logo', 'hex'), 'Ein Gehege, in dem Pinguine leben und schwimmen.',20),
+  (4, 'Tropenhaus', decode(:'tropenhaus_logo', 'hex'), 'Ein Tropenhaus mit exotischen Vögeln, Pflanzen und Wasserfällen.', 60),
+  (5, 'Toucan Trail', decode(:'toucan_trail_logo', 'hex'), 'Ein gewundener Pfad durch einen üppigen Dschungel voller bunter Tukane und anderer tropischer Vögel.', 15),
+  (6, 'Eagle Canyon', decode(:'eagle_canyon_logo', 'hex'), 'Ein weitläufiger Canyon, in dem majestätische Adler hoch oben schweben.', 30),
+  (7, 'Parrot Paradise', decode(:'parrot_paradise_logo', 'hex'), 'Ein lebendiges Paradies, in dem verspielte Papageien die Besucher mit ihren Possen unterhalten.', 30),
+  (8, 'Pingu Höhle', decode(:'penguin_cove_logo', 'hex'), 'Eine kühle Bucht, in der niedliche Pinguine im eisigen Wasser watscheln und schwimmen.', 40),
+  (9, 'Flug Abenteuer', decode(:'aviary_adventure_logo', 'hex'), 'Ein beeindruckendes Volierenerlebnis, bei dem die Besucher zwischen frei fliegenden Vögeln aus aller Welt spazieren können.', 60);
 
 
-
+INSERT INTO attractionTours (attraction_id, tour_id, tour_order)
+VALUES
+  (1, 1, 1),
+  (2, 1, 2),
+  (3, 1, 3),
+  (4, 3, 1),
+  (5, 3, 2),
+  (6, 3, 3),
+  (7, 2, 1),
+  (8, 2, 2),
+  (9, 2, 3);
 
 INSERT INTO tags (tag_id, name)
 VALUES
@@ -193,36 +208,44 @@ UPDATE tour AS t
 SET duration_in_minutes = subquery.total_duration
 FROM (
     SELECT
-        a.tour_id,
-        SUM(a.duration_in_minutes) AS total_duration
+        attt.tour_id,
+        SUM(att.duration_in_minutes) AS total_duration
     FROM
-        attractions AS a
+        attractionTours AS attt
+    JOIN
+        attractions AS att ON attt.attraction_id = att.attraction_id
     GROUP BY
-        a.tour_id
+        attt.tour_id
 ) AS subquery
 WHERE
     t.tour_id = subquery.tour_id;
 
-UPDATE tour AS t
+    UPDATE tour AS t
 SET end_time = t.begin_time + INTERVAL '1 minute' * (
-    SELECT COALESCE(SUM(duration_in_minutes), 0)
-    FROM attractions
-    WHERE tour_id = t.tour_id
+    SELECT COALESCE(SUM(a.duration_in_minutes), 0)
+    FROM attractions AS a
+    JOIN attractionTours AS at ON at.attraction_id = a.attraction_id
+    WHERE at.tour_id = t.tour_id
 );
+
 
 CREATE OR REPLACE FUNCTION update_tour_duration()
 RETURNS TRIGGER AS $$
+DECLARE
+    tour_duration INT;
 BEGIN
     UPDATE tour AS t
     SET duration_in_minutes = subquery.total_duration
     FROM (
         SELECT
-            a.tour_id,
-            SUM(a.duration_in_minutes) AS total_duration
+            attt.tour_id,
+            SUM(att.duration_in_minutes) AS total_duration
         FROM
-            attractions AS a
+            attractionTours AS attt
+        JOIN
+            attractions AS att ON attt.attraction_id = att.attraction_id
         GROUP BY
-            a.tour_id
+            attt.tour_id
     ) AS subquery
     WHERE
         t.tour_id = subquery.tour_id;
@@ -231,42 +254,62 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_update_tour_duration
+CREATE TRIGGER update_tour_duration_trigger
 AFTER INSERT OR UPDATE OR DELETE ON attractions
 FOR EACH STATEMENT
 EXECUTE FUNCTION update_tour_duration();
 
-CREATE OR REPLACE FUNCTION delete_attraction_tags()
+
+CREATE OR REPLACE FUNCTION update_tour_end_time_on_begin_time_change()
 RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM attractiontags WHERE attraction_id = OLD.attraction_id;
-    RETURN OLD;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION update_tour_end_time()
-RETURNS TRIGGER AS $$
-DECLARE
-    tour_duration INT;
-BEGIN
-    SELECT SUM(a.duration_in_minutes) INTO tour_duration
-    FROM attractions AS a
-    WHERE a.tour_id = NEW.tour_id;
-
     UPDATE tour
-    SET end_time = tour.begin_time + INTERVAL '1 minute' * tour_duration
+    SET end_time = NEW.begin_time + 
+                   INTERVAL '1 minute' * (SELECT COALESCE(SUM(duration_in_minutes), 0)
+                                          FROM attractions AS a
+                                          JOIN attractionTours AS at ON at.attraction_id = a.attraction_id
+                                          WHERE at.tour_id = NEW.tour_id)
     WHERE tour_id = NEW.tour_id;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_tour_end_time_trigger
-AFTER INSERT OR UPDATE ON attractions
+CREATE TRIGGER update_tour_end_time_trigger_on_begin_time_change
+AFTER UPDATE OF begin_time ON tour
 FOR EACH ROW
-EXECUTE FUNCTION update_tour_end_time();
+EXECUTE
 
-CREATE TRIGGER delete_attraction_tags_trigger
-BEFORE DELETE ON attractions
+CREATE OR REPLACE FUNCTION update_tour_end_time_on_attractions_change()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE tour
+    SET end_time = tour.begin_time + 
+                   INTERVAL '1 minute' * (
+                       SELECT COALESCE(SUM(a.duration_in_minutes), 0)
+                       FROM attractions AS a
+                       JOIN attractionTours AS at ON at.attraction_id = a.attraction_id
+                       WHERE at.tour_id IN (
+                           SELECT DISTINCT tour_id
+                           FROM attractionTours
+                           WHERE attraction_id = NEW.attraction_id
+                       )
+                   )
+    WHERE tour.tour_id IN (
+        SELECT DISTINCT tour_id
+        FROM attractionTours
+        WHERE attraction_id = NEW.attraction_id
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_tour_end_time_trigger_on_attractions_change
+AFTER INSERT OR UPDATE OR DELETE ON attractions
 FOR EACH ROW
-EXECUTE FUNCTION delete_attraction_tags();
+EXECUTE FUNCTION update_tour_end_time_on_attractions_change();
+
+CREATE TRIGGER update_tour_end_time_trigger_on_attractiontours_change
+AFTER INSERT OR UPDATE OR DELETE ON attractionTours
+FOR EACH ROW
+EXECUTE FUNCTION update_tour_end_time_on_attractions_change();

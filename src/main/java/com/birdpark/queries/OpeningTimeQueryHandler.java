@@ -12,26 +12,26 @@ import com.birdpark.repository.OpeningTimeRepository;
 import an.awesome.pipelinr.Command;
 
 @Component
-public class OpeningTimeQueryHandler implements Command.Handler<OpeningTimeQuery, List<OpeningTimeDto>>{
+public class OpeningTimeQueryHandler implements Command.Handler<OpeningTimeQuery, List<OpeningTimeDto>> {
 
-@Autowired
-OpeningTimeRepository repository;
+    @Autowired
+    OpeningTimeRepository repository;
 
     @Override
     public List<OpeningTimeDto> handle(OpeningTimeQuery command) {
-       
-        List<OpeningTime> openingTimeList = repository.findByBirdId(command.getBird_park_id());
+
+        List<OpeningTime> openingTimeList = repository.findByBirdParkId(command.getBird_park_id());
 
         if (!openingTimeList.isEmpty()) {
             return openingTimeList.stream().map(openingTime -> mapToDto(openingTime)).toList();
-        }else {
+        } else {
             throw new RuntimeException("Opening Time not found");
         }
     }
 
     private OpeningTimeDto mapToDto(OpeningTime openingTime) {
-        return new OpeningTimeDto(openingTime.getId(), openingTime.getBirdParkId(), openingTime.getDayOfWeek(), openingTime.getOpeningTime(), openingTime.getClosingTime());
+        return new OpeningTimeDto(openingTime.getId(), openingTime.getBirdParkId(), openingTime.getDayOfWeek(),
+                openingTime.getOpeningTime(), openingTime.getClosingTime());
     }
-    
 
 }

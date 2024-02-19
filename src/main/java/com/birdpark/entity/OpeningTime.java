@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter 
+@Setter
 @Getter
 
 @Entity
@@ -31,16 +31,16 @@ public class OpeningTime {
 
         @Column(name = "closing_time")
         private LocalTime closingTime;
-        
 
         public OpeningTime() {
         }
 
-        public OpeningTime(Integer id, Integer birdParkId, String dayOfWeek, LocalTime openingTime, LocalTime closingTime) {
+        public OpeningTime(Integer id, Integer birdParkId, String dayOfWeek, LocalTime openingTime,
+                        LocalTime closingTime) {
                 this.id = id;
-                this.birdParkId = birdParkId;   
-                this.dayOfWeek = dayOfWeek;     
-                this.openingTime = openingTime; 
-                this.closingTime = closingTime; 
+                this.birdParkId = birdParkId;
+                this.dayOfWeek = dayOfWeek;
+                this.openingTime = openingTime;
+                this.closingTime = closingTime;
         }
 }
