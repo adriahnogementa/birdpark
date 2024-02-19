@@ -10,7 +10,7 @@ import com.birdpark.dto.TicketPriceDto;
 
 @Getter
 @AllArgsConstructor
-public class TicketPriceQuery implements Command<List<TicketPriceDto>>{
-    
-    private Integer bird_park_id;
+public class TicketPriceQuery implements Command<List<TicketPriceDto>> {
+
+    private Integer birdParkId;
 }

@@ -184,6 +184,7 @@ VALUES
   (8, 6),  -- Penguins
   (8, 8),  -- Icy Waters
   (8, 1),  -- Birds
+  (8, 18), -- Icy Waters
   (9, 1),  -- Birds
   (9, 16), -- Interactive
   (9, 19); -- Free-flying

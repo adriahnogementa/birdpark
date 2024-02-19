@@ -12,25 +12,29 @@ import com.birdpark.repository.ParkinformationRepository;
 import an.awesome.pipelinr.Command;
 
 @Component
-public class ParkInformationQueryHandler implements Command.Handler<ParkInformationQuery, ParkInformationDto>{
+public class ParkInformationQueryHandler implements Command.Handler<ParkInformationQuery, ParkInformationDto> {
 
-@Autowired
-ParkinformationRepository repository;
+    @Autowired
+    ParkinformationRepository repository;
 
     @Override
     public ParkInformationDto handle(ParkInformationQuery command) {
-        
-        Optional <ParkInformation> parkInformationOptional = repository.findById(command.getId());
-    
+
+        Integer id = command.getId();
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+
+        Optional<ParkInformation> parkInformationOptional = repository.findById(id);
 
         if (parkInformationOptional.isPresent()) {
-            ParkInformation parkInformation =  parkInformationOptional.get();
-            return new ParkInformationDto(parkInformation.getParkName(), parkInformation.getParkLocation(), parkInformation.getParkDescription(), parkInformation.getParkLogo());
+            ParkInformation parkInformation = parkInformationOptional.get();
+            return new ParkInformationDto(parkInformation.getParkName(), parkInformation.getParkLocation(),
+                    parkInformation.getParkDescription(), parkInformation.getParkLogo());
         } else {
-            throw new RuntimeException("Park Information not found");            
+            throw new RuntimeException("Park Information not found");
         }
-    
+
     }
-    
 
 }
