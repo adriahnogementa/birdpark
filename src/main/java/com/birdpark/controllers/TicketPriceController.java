@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.birdpark.commands.EditTicketPriceCommand;
+import com.birdpark.commands.edit.EditTicketPriceCommand;
 import com.birdpark.dto.TicketPriceDto;
 import com.birdpark.entity.TicketPrice;
 import com.birdpark.queries.TicketPriceQuery;
@@ -19,8 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ticketprice")
-public class TicketPriceController extends BaseController{
-
+public class TicketPriceController extends BaseController {
 
     @Autowired
     Pipeline pipeline;
@@ -29,7 +28,7 @@ public class TicketPriceController extends BaseController{
     public ResponseEntity<String> editTicketPrice(@RequestBody List<TicketPriceDto> dtos) {
         EditTicketPriceCommand command = new EditTicketPriceCommand();
         dtos.stream()
-            .forEach(dto -> command.add(new TicketPrice(dto.getId(), 1, dto.getTicketType(), dto.getPrice())));
+                .forEach(dto -> command.add(new TicketPrice(dto.getId(), 1, dto.getTicketType(), dto.getPrice())));
         return this.execute(command);
     }
 
@@ -39,5 +38,4 @@ public class TicketPriceController extends BaseController{
         return query.execute(pipeline);
     }
 
-    
 }

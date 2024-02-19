@@ -1,4 +1,4 @@
-package com.birdpark.commands;
+package com.birdpark.commands.edit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

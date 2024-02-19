@@ -14,12 +14,10 @@ import an.awesome.pipelinr.Pipeline;
 
 @RestController
 @RequestMapping("/tag")
-public class TagController extends BaseController{
+public class TagController extends BaseController {
 
-    
     @Autowired
     Pipeline pipeline;
-    
 
     @GetMapping("/get")
     public List<TagDto> getTags() {

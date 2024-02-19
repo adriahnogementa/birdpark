@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.birdpark.commands.EditAttractionCommand;
 import com.birdpark.commands.delete.DeleteAttractionCommand;
+import com.birdpark.commands.edit.EditAttractionCommand;
 import com.birdpark.dto.AttractionDto;
 import com.birdpark.dto.AttractionForUserDto;
 import com.birdpark.dto.TagDto;

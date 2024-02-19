@@ -2,7 +2,6 @@ package com.birdpark.controllers;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.birdpark.commands.EditOpeningTimeCommand;
+import com.birdpark.commands.edit.EditOpeningTimeCommand;
 import com.birdpark.dto.OpeningTimeDto;
 import com.birdpark.entity.OpeningTime;
 import com.birdpark.queries.OpeningTimeQuery;
@@ -29,7 +28,8 @@ public class OpeningTimeController extends BaseController {
     public ResponseEntity<String> editOpeningTime(@RequestBody List<OpeningTimeDto> dtos) {
         EditOpeningTimeCommand command = new EditOpeningTimeCommand();
         dtos.stream()
-            .forEach(dto -> command.add(new OpeningTime(dto.getId(), dto.getBirdParkId(), dto.getDayOfWeek(), dto.getOpeningTime(), dto.getClosingTime())));
+                .forEach(dto -> command.add(new OpeningTime(dto.getId(), dto.getBirdParkId(), dto.getDayOfWeek(),
+                        dto.getOpeningTime(), dto.getClosingTime())));
         return this.execute(command);
     }
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.birdpark.commands.EditParkInformationCommand;
+import com.birdpark.commands.edit.EditParkInformationCommand;
 import com.birdpark.dto.ParkInformationDto;
 import com.birdpark.queries.ParkInformationQuery;
 
@@ -25,7 +25,7 @@ public class ParkInformationController extends BaseController {
     public ResponseEntity<String> editParkInformation(@RequestBody ParkInformationDto dto) {
 
         EditParkInformationCommand command = new EditParkInformationCommand(dto.getParkName(),
-        dto.getParkLocation(), dto.getParkDescription(), dto.getParkLogo());
+                dto.getParkLocation(), dto.getParkDescription(), dto.getParkLogo());
         return this.execute(command);
     }
 

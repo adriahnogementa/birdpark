@@ -1,4 +1,4 @@
-package com.birdpark.commands;
+package com.birdpark.commands.edit;
 
 import java.util.ArrayList;
 
