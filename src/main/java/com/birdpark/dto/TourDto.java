@@ -20,4 +20,8 @@ public class TourDto {
     private LocalTime beginTime;
     private LocalTime endTime;
 
+    public TourDto(Integer tourId, String TourName) {
+        this.tourId = tourId;
+        this.name = TourName;
+    }
 }

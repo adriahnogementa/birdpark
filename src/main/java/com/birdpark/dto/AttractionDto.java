@@ -1,5 +1,8 @@
 package com.birdpark.dto;
 
+import java.util.List;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +16,6 @@ public class AttractionDto {
     private String attractionName;
     private byte[] logo;
     private String description;
-    private Integer durationInMinutes;
-    private Integer tourId;
+    private List<String> tags;
+    private List<String> tour;
 }

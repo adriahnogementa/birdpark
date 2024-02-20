@@ -12,7 +12,7 @@ import com.birdpark.dto.AttractionDto;
 import com.birdpark.dto.AttractionForUserDto;
 import com.birdpark.dto.TagDto;
 import com.birdpark.entity.Attraction;
-import com.birdpark.queries.AttractionForUserQuery;
+import com.birdpark.queries.AttractionQuery;
 
 import an.awesome.pipelinr.Pipeline;
 
@@ -26,10 +26,10 @@ public class AttractionController extends BaseController {
     @PostMapping("/edit")
     public ResponseEntity<String> editAttraction(@RequestBody List<AttractionDto> dtos) {
         EditAttractionCommand command = new EditAttractionCommand();
-        dtos.stream()
+        /*dtos.stream()
                 .forEach(dto -> command
                         .add(new Attraction(dto.getId(), dto.getAttractionName(), dto.getLogo(), dto.getDescription(),
-                                dto.getDurationInMinutes(), dto.getTourId())));
+                                dto.getDurationInMinutes(), dto.getTourId())));*/
         return this.execute(command);
     }
 
@@ -40,16 +40,16 @@ public class AttractionController extends BaseController {
     }
 
     @GetMapping("/getUserView")
-    public List<AttractionForUserDto> getAttraction() {
-        AttractionForUserQuery query = new AttractionForUserQuery();
+    public List<AttractionDto> getAttraction() {
+        AttractionQuery query = new AttractionQuery();
         return query.execute(pipeline);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/getUserViewByTag")
-    public List<AttractionForUserDto> getAttractionByTag(@RequestBody List<TagDto> tagDto) {
-        AttractionForUserQuery query = new AttractionForUserQuery();
-        List<AttractionForUserDto> attractionList = query.execute(pipeline);
+    public List<AttractionDto> getAttractionByTag(@RequestBody List<TagDto> tagDto) {
+        AttractionQuery query = new AttractionQuery();
+        List<AttractionDto> attractionList = query.execute(pipeline);
         return attractionList.stream()
                 .filter(attraction -> tagDto.stream().allMatch(
                         tag -> attraction.getTags().stream()
