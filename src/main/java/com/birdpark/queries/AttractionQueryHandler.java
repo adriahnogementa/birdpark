@@ -39,7 +39,7 @@ public class AttractionQueryHandler
 
     private AttractionDto mapToDto(Attraction attraction) {
         return new AttractionDto(attraction.getId(), attraction.getAttractionName(), attraction.getAttractionLogo(),
-                attraction.getAttractionDescription(), mapToTagStringList(attraction.getTagList()), mapToTourStringList(attraction.getTourList()));
+                attraction.getAttractionDescription(), attraction.getDurationInMinutes(), mapToTagStringList(attraction.getTagList()), mapToTourStringList(attraction.getTourList()));
     }
 
     private List<String> mapToTourStringList(List<Tour> tourList) {

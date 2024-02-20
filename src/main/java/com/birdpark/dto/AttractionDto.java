@@ -12,10 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AttractionDto {
 
-    private Integer id;
+    private Integer attraction_id;
     private String attractionName;
     private byte[] logo;
     private String description;
+    private Integer durationInMinutes;
     private List<String> tags;
     private List<String> tour;
 }

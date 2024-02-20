@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.birdpark.commands.delete.DeleteAttractionCommand;
 import com.birdpark.commands.edit.EditAttractionCommand;
 import com.birdpark.dto.AttractionDto;
-import com.birdpark.dto.AttractionForUserDto;
 import com.birdpark.dto.TagDto;
 import com.birdpark.entity.Attraction;
 import com.birdpark.queries.AttractionQuery;
@@ -26,16 +25,25 @@ public class AttractionController extends BaseController {
     @PostMapping("/edit")
     public ResponseEntity<String> editAttraction(@RequestBody List<AttractionDto> dtos) {
         EditAttractionCommand command = new EditAttractionCommand();
-        /*dtos.stream()
+        dtos.stream()
                 .forEach(dto -> command
-                        .add(new Attraction(dto.getId(), dto.getAttractionName(), dto.getLogo(), dto.getDescription(),
-                                dto.getDurationInMinutes(), dto.getTourId())));*/
+                        .add(createNewAttraction(dto)));
         return this.execute(command);
+    }
+
+    private Attraction createNewAttraction(AttractionDto dto) {
+        Attraction attraction = new Attraction();
+        attraction.setId(dto.getAttraction_id());
+        attraction.setAttractionName(dto.getAttractionName());
+        attraction.setAttractionLogo(dto.getLogo());
+        attraction.setAttractionDescription(dto.getDescription());
+        attraction.setDurationInMinutes(dto.getDurationInMinutes());
+        return attraction;
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAttraction(@RequestBody AttractionDto dto) {
-        DeleteAttractionCommand command = new DeleteAttractionCommand(dto.getId());
+        DeleteAttractionCommand command = new DeleteAttractionCommand(dto.getAttraction_id());
         return this.execute(command);
     }
 
