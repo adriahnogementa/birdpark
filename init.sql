@@ -291,3 +291,8 @@ CREATE TRIGGER update_tour_end_time_trigger_on_duration_change
 AFTER UPDATE OF duration_in_minutes ON tour
 FOR EACH ROW
 EXECUTE FUNCTION update_tour_end_time_on_begin_time_change();
+
+CREATE TRIGGER update_tour_duration_trigger_on_tour_change
+AFTER UPDATE OF begin_time ON tour
+FOR EACH STATEMENT
+EXECUTE FUNCTION update_tour_duration();
