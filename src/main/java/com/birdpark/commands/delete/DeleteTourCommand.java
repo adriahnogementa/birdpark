@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class DeleteAttractionCommand implements Command<Boolean> {
+public class DeleteTourCommand implements Command<Boolean>{
 
-    private Integer attractionId;
+    private Integer tourId;
+    
 }

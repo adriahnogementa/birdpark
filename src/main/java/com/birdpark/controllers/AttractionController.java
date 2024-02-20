@@ -42,8 +42,8 @@ public class AttractionController extends BaseController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteAttraction(@RequestBody AttractionDto dto) {
-        DeleteAttractionCommand command = new DeleteAttractionCommand(dto.getAttraction_id());
+    public ResponseEntity<String> deleteAttraction(@RequestBody Integer attractionId) {
+        DeleteAttractionCommand command = new DeleteAttractionCommand(attractionId);
         return this.execute(command);
     }
 

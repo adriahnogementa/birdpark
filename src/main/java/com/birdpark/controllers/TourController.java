@@ -2,14 +2,18 @@ package com.birdpark.controllers;
 
 import java.util.List;
 
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.birdpark.commands.delete.DeleteTourCommand;
 import com.birdpark.dto.TourDto;
 import com.birdpark.queries.TourQuery;
 
@@ -40,6 +44,12 @@ public class TourController extends BaseController {
                 attractionTour -> attractionTour.getAttractionName().equals(attraction))
         ))
         .toList();
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteTour(@RequestBody Integer tourId) {
+        DeleteTourCommand command = new DeleteTourCommand(tourId);
+        return this.execute(command);
     }
 
 }

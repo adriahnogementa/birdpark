@@ -19,7 +19,7 @@ public class DeleteAttractionCommandHandler implements Command.Handler<DeleteAtt
     public Boolean handle(DeleteAttractionCommand command) {
 
         var entity = new Attraction();
-        entity.setId(command.getId());
+        entity.setId(command.getAttractionId());
         try {
             attractionRepository.delete(entity);
             return true;
