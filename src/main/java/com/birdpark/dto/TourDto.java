@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.List;
+
 
 @Setter
 @Getter
@@ -19,6 +21,7 @@ public class TourDto {
     private String name;
     private LocalTime beginTime;
     private LocalTime endTime;
+    private List<AttractionDto> attractions;
 
     public TourDto(Integer tourId, String TourName) {
         this.tourId = tourId;

@@ -1,8 +1,6 @@
 package com.birdpark.queries;
 
 import com.birdpark.dto.AttractionDto;
-import com.birdpark.dto.TagDto;
-import com.birdpark.dto.TourDto;
 import com.birdpark.entity.Attraction;
 import com.birdpark.entity.Tag;
 import com.birdpark.entity.Tour;
@@ -39,7 +37,7 @@ public class AttractionQueryHandler
 
     private AttractionDto mapToDto(Attraction attraction) {
         return new AttractionDto(attraction.getId(), attraction.getAttractionName(), attraction.getAttractionLogo(),
-                attraction.getAttractionDescription(), attraction.getDurationInMinutes(), mapToTagStringList(attraction.getTagList()), mapToTourStringList(attraction.getTourList()));
+                attraction.getAttractionDescription(), attraction.getDurationInMinutes(), 0, mapToTagStringList(attraction.getTagList()), mapToTourStringList(attraction.getTourList()));
     }
 
     private List<String> mapToTourStringList(List<Tour> tourList) {

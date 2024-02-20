@@ -48,14 +48,14 @@ public class AttractionController extends BaseController {
     }
 
     @GetMapping("/getUserView")
-    public List<AttractionDto> getAttraction() {
+    public List<AttractionDto> getAttractionUserView() {
         AttractionQuery query = new AttractionQuery();
         return query.execute(pipeline);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/getUserViewByTag")
-    public List<AttractionDto> getAttractionByTag(@RequestBody List<TagDto> tagDto) {
+    public List<AttractionDto> getAttractionUserViewByTag(@RequestBody List<TagDto> tagDto) {
         AttractionQuery query = new AttractionQuery();
         List<AttractionDto> attractionList = query.execute(pipeline);
         return attractionList.stream()

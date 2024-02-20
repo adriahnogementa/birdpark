@@ -2,10 +2,15 @@ package com.birdpark.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +44,9 @@ public class Tour {
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    
+    @OneToMany(mappedBy = "tour")
+    private List<AttractionTour> attractionTourList;
+
     public Tour() {
     }
 

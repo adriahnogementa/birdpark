@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,9 @@ public class Attraction {
 
     @Column(name = "duration_in_minutes")
     private Integer durationInMinutes;
+
+    @OneToMany(mappedBy = "attraction")
+    private List<AttractionTour> attractionTourList;
 
     @ManyToMany
     @JoinTable(name = "attractiontours",
