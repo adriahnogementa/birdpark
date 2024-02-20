@@ -254,8 +254,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_tour_duration_trigger
+CREATE TRIGGER update_tour_duration_trigger_on_attraction_change
 AFTER INSERT OR UPDATE OR DELETE ON attractions
+FOR EACH STATEMENT
+EXECUTE FUNCTION update_tour_duration();
+
+CREATE TRIGGER update_tour_duration_trigger_on_attractiontour_change
+AFTER INSERT OR UPDATE OR DELETE ON attractionTours
 FOR EACH STATEMENT
 EXECUTE FUNCTION update_tour_duration();
 
@@ -278,38 +283,9 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_tour_end_time_trigger_on_begin_time_change
 AFTER UPDATE OF begin_time ON tour
 FOR EACH ROW
-EXECUTE
+EXECUTE FUNCTION update_tour_end_time_on_begin_time_change();
 
-CREATE OR REPLACE FUNCTION update_tour_end_time_on_attractions_change()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE tour
-    SET end_time = tour.begin_time + 
-                   INTERVAL '1 minute' * (
-                       SELECT COALESCE(SUM(a.duration_in_minutes), 0)
-                       FROM attractions AS a
-                       JOIN attractionTours AS at ON at.attraction_id = a.attraction_id
-                       WHERE at.tour_id IN (
-                           SELECT DISTINCT tour_id
-                           FROM attractionTours
-                           WHERE attraction_id = NEW.attraction_id
-                       )
-                   )
-    WHERE tour.tour_id IN (
-        SELECT DISTINCT tour_id
-        FROM attractionTours
-        WHERE attraction_id = NEW.attraction_id
-    );
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_tour_end_time_trigger_on_attractions_change
-AFTER INSERT OR UPDATE OR DELETE ON attractions
+CREATE TRIGGER update_tour_end_time_trigger_on_duration_change
+AFTER UPDATE OF duration_in_minutes ON tour
 FOR EACH ROW
-EXECUTE FUNCTION update_tour_end_time_on_attractions_change();
-
-CREATE TRIGGER update_tour_end_time_trigger_on_attractiontours_change
-AFTER INSERT OR UPDATE OR DELETE ON attractionTours
-FOR EACH ROW
-EXECUTE FUNCTION update_tour_end_time_on_attractions_change();
+EXECUTE FUNCTION update_tour_end_time_on_begin_time_change();
