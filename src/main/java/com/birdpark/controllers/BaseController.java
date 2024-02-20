@@ -33,11 +33,8 @@ public abstract class BaseController {
         return new ResponseEntity<String>(String.format("%s unsuccessfully executed", commandName),
             HttpStatus.INTERNAL_SERVER_ERROR);
       }
-    } catch (CommandValidationException exception) {
-      StackTraceUtilities.printShortStackTrace(exception, 2);
-      return new ResponseEntity<String>(String.format("Validation of %s failed", commandName), HttpStatus.BAD_REQUEST);
     } catch (Exception exception) {
-      StackTraceUtilities.printShortStackTrace(exception, 2);
+      StackTraceUtilities.printShortStackTrace(exception, 10);
       return new ResponseEntity<String>(String.format("%s produced unexpected errors", commandName),
           HttpStatus.INTERNAL_SERVER_ERROR);
     }

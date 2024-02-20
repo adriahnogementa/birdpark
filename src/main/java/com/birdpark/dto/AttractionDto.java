@@ -21,6 +21,9 @@ public class AttractionDto {
     private List<String> tags;
     private List<String> tour;
 
+    public AttractionDto() {
+    }
+
     public AttractionDto(Integer attraction_id, String attractionName, Integer tourOrder) {
         this.attraction_id = attraction_id;
         this.attractionName = attractionName;

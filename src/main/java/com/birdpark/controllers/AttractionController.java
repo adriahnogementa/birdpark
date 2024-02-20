@@ -10,7 +10,6 @@ import com.birdpark.commands.delete.DeleteAttractionCommand;
 import com.birdpark.commands.edit.EditAttractionCommand;
 import com.birdpark.dto.AttractionDto;
 import com.birdpark.dto.TagDto;
-import com.birdpark.entity.Attraction;
 import com.birdpark.queries.AttractionQuery;
 
 import an.awesome.pipelinr.Pipeline;
@@ -23,22 +22,8 @@ public class AttractionController extends BaseController {
     Pipeline pipeline;
 
     @PostMapping("/edit")
-    public ResponseEntity<String> editAttraction(@RequestBody List<AttractionDto> dtos) {
-        EditAttractionCommand command = new EditAttractionCommand();
-        dtos.stream()
-                .forEach(dto -> command
-                        .add(createNewAttraction(dto)));
+    public ResponseEntity<String> editAttraction(@RequestBody EditAttractionCommand command) {
         return this.execute(command);
-    }
-
-    private Attraction createNewAttraction(AttractionDto dto) {
-        Attraction attraction = new Attraction();
-        attraction.setId(dto.getAttraction_id());
-        attraction.setAttractionName(dto.getAttractionName());
-        attraction.setAttractionLogo(dto.getLogo());
-        attraction.setAttractionDescription(dto.getDescription());
-        attraction.setDurationInMinutes(dto.getDurationInMinutes());
-        return attraction;
     }
 
     @DeleteMapping("/delete")

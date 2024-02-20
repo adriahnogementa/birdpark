@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.birdpark.commands.delete.DeleteTourCommand;
+import com.birdpark.commands.edit.EditTourCommand;
 import com.birdpark.dto.TourDto;
 import com.birdpark.queries.TourQuery;
 
@@ -49,6 +50,11 @@ public class TourController extends BaseController {
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteTour(@RequestBody Integer tourId) {
         DeleteTourCommand command = new DeleteTourCommand(tourId);
+        return this.execute(command);
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<String> editTour(@RequestBody EditTourCommand command) {
         return this.execute(command);
     }
 

@@ -267,7 +267,6 @@ AFTER INSERT OR UPDATE OR DELETE ON attractionTours
 FOR EACH STATEMENT
 EXECUTE FUNCTION update_tour_duration();
 
-
 CREATE OR REPLACE FUNCTION update_tour_end_time_on_begin_time_change()
 RETURNS TRIGGER AS $$
 BEGIN

@@ -3,6 +3,7 @@ package com.birdpark.commands.edit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.birdpark.entity.Attraction;
 import com.birdpark.repository.AttractionRepository;
 
 import an.awesome.pipelinr.Command;
@@ -16,17 +17,20 @@ public class EditAttractionCommandHandler implements Command.Handler<EditAttract
     @Override
     public Boolean handle(EditAttractionCommand command) {
 
-        boolean allSaved = command.stream()
-                .map(attractionRepository::save)
-                .noneMatch(saved -> false);
+    var newEntity = new Attraction();
 
-        if (allSaved) {
+    newEntity.setId(command.getAttractionId());
+    newEntity.setAttractionName(command.getAttractionName());
+    newEntity.setAttractionDescription(command.getAttractionDescription());
+    newEntity.setDurationInMinutes(command.getAttractionDurationInMinutes());
+    newEntity.setAttractionLogo(command.getAttractionLogo());
+
+        var result =  attractionRepository.save(newEntity);
+
+        if (result != null) {
             return true;
-        } else {
-            return false;
-
         }
-
+        return false;
     }
 
 }
